@@ -1,0 +1,86 @@
+import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
+import User from 'App/Models/User'
+
+export default class UserSeeder extends BaseSeeder {
+  public async run() {
+    await User.createMany([
+      {
+        email: 'developers@moxey.ai',
+        password: '1234',
+        firstName: 'Admin',
+        lastName: 'Developers',
+        countryCode: 91,
+        mobile: 9876543211,
+        country: 'India',
+        roleId: 1,
+        firstLogin: false,
+      },
+      {
+        email: 'admin@moxey.ai',
+        password: '0000',
+        firstName: 'Admin',
+        lastName: 'Admin',
+        countryCode: 91,
+        mobile: 9876543210,
+        country: 'India',
+        roleId: 1,
+        firstLogin: false,
+      },
+      {
+        email: 'rohit.pullela@moxey.ai',
+        password: '1234',
+        firstName: 'Rohit',
+        lastName: 'Pullela',
+        countryCode: 91,
+        mobile: 9618481436,
+        country: 'India',
+        roleId: 3,
+        firstLogin: true,
+      },
+      {
+        email: 'sohan.bandary@moxey.ai',
+        password: '1234',
+        firstName: 'Sohan',
+        lastName: 'Bandary',
+        countryCode: 91,
+        mobile: 8977000174,
+        country: 'India',
+        roleId: 3,
+        firstLogin: true,
+      },
+      {
+        email: 'ujjwal.saini@moxey.ai',
+        password: '1234',
+        firstName: 'Ujjwal',
+        lastName: 'Saini',
+        countryCode: 91,
+        mobile: 7986645064,
+        country: 'India',
+        roleId: 3,
+        firstLogin: true,
+      },
+      {
+        email: 'vishnu.vikram@moxey.ai',
+        password: '1234',
+        firstName: 'Vishnu',
+        lastName: 'Vikram',
+        countryCode: 91,
+        mobile: 8921113076,
+        country: 'India',
+        roleId: 3,
+        firstLogin: true,
+      },
+      {
+        email: 'giri.babu@moxey.ai',
+        password: '1234',
+        firstName: 'Giri',
+        lastName: 'Babu',
+        countryCode: 91,
+        mobile: 9008823459,
+        country: 'India',
+        roleId: 3,
+        firstLogin: true,
+      },
+    ])
+  }
+}

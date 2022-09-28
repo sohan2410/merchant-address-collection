@@ -1,0 +1,168 @@
+{
+  "ForgetPassword": {
+    "username.required": "Please provide your email address linked to your Moxey account",
+    "username.exists": "This account does not exists in our database",
+    "password.regex": "Please provide valid passcode"
+  },
+  "register": {
+    "firstName.required": "Please provide first name",
+    "lastName.required": "Please provide last name",
+    "email.required": "Please provide email address",
+    "email.email": "Please provide a valid Moxey email address",
+    "email.regex": "Please provide a valid Moxey email address",
+    "email.unique": "Email is already linked to other account, please provide a new email or login",
+    "mobile.required": "Please prove phone number",
+    "mobile.unique": "Phone number is already linked to other account, please provide a new phone number or login",
+    "password.required": "Please provide passcode",
+    "password.minLength": "Passcode must have at-least {minLength} characters",
+    "password.confirmed": "Passcode and confirmed passcode do not match",
+    "password_confirmation.confirmed": "Passcode and confirmed passcode do not match",
+    "password.regex": "Please provide valid passcode",
+    "country.required": "Please provide country code",
+    "dob.date.format": "Please provide valid dob date",
+    "country.range": "Invalid country code"
+  },
+  "category": {
+    "*": "{field} is required"
+  },
+  "store": {
+    "name.required": "Please provide a store name",
+    "storeCategory.required": " Please select a store category",
+    "category.required": "Please select a category",
+    "category.enum": "Please provide a valid category",
+    "ownershipType.required": "Please select a ownership type",
+    "ownershipType.enum": "Please select a ownership type",
+    "approachDate.required": "Please select an approach date",
+    "paymentModeAccepted.required": "Please select a payment mode",
+    "paymentModeAccepted.others.string": "Please provide other valid payment modes",
+    "paymentModeAccepted.*.boolean": "Please provide valid payment modes",
+    "region.required": "Please select a region",
+    "status.required": "Please select a status",
+    "type.required": "{field} is required and cannot be empty",
+    "numberOfDaysForValidation.required": "Please provide number of days for validation",
+    "openingTimings.required": "Please provide opening timings",
+    "closingTimings.required": "Please provide closing timings",
+    "openingTimings.regex": "Opening timings has incorrect time format",
+    "closingTimings.regex": "Closing timings has incorrect time format",
+    "approachDate.date.format": "Date format is incorrect",
+    "logo.required": "Please provide a logo",
+    "logo.file": "Please provide a logo",
+    "images.required": "Please provide store images",
+    "storeId.exists": "Store does not exists"
+  },
+  "user": {
+    "regex": "Please provide a valid Moxey email address",
+    "exists": "Email does not exist in our database"
+  },
+  "additional_details": {
+    "noOfSmartPhones.range": "Provide valid number for number of smart phones",
+    "noOfPosMachines.range": "Provide valid number for number of POS machines",
+    "noOfAttendants.range": "Provide valid number for number of attendants"
+  },
+  "address": {
+    "noOfTollBoothsOnRoute.range": "Provide valid number for number of toll booths",
+    "addressLine1.required": "Please provide address",
+    "city.required": "Please provide city",
+    "region.required": "Please provide region",
+    "country.required": "Please provide country"
+  },
+  "contract": {
+    "merchantDiscountRate.range": "Provide valid merchant discount rate",
+    "merchantDiscountRate.maxLength": "Provide valid merchant discount rate",
+    "daysForOnboarding.enum": "Please provide valid days for onboarding",
+    "startDate.regex": "Please provide a valid start date"
+  },
+  "driver": {
+    "firstNameEn.required": "Please provide your first name",
+    "lastNameEn.required": "Please provide your last name",
+    "middleNameEn.required": "Please provide your middle name",
+    "firstNameAr.required": "Please provide your first name",
+    "lastNameAr.required": "Please provide your last name",
+    "middleNameAr.required": "Please provide your middle name",
+    "nameOnCard.required": "Please provide name on card",
+    "nameOnCard.minLength": "Name on card should atleast contain 2 letters",
+    "nameOnCard.maxLength": "Name on card should atmost contain 19 letters",
+    "gender.required": "Please provide gender",
+    "gender.enum": "Please provide valid gender",
+    "dob.required": "Please provide date of birth",
+    "dob.regex": "Please provide date of birth in the format DD/MM/YYYY",
+    "countryCode.required": "Please provide country code",
+    "mobile.required": "Please provide mobile number",
+    "mobile.number": "Please provide valid mobile number",
+    "birthCountry.required": "Pleae provide country of birth",
+    "birthCity.required": "Please provide city of birth",
+    "profilePic.required": "Please provide a profile picture"
+  },
+  "communication_details": {
+    "driverId.required": "Please provide driver id",
+    "driverId.exists": "Driver does not exists",
+    "streetName.maxLength": "Maximum length reached for street name",
+    "country.required": "Please provide country",
+    "city.required": "Please provide city",
+    "zipCode.required": "Please provide zip code",
+    "zipCode.number": "Please provide valid zip code",
+    "buildingNo.required": "Please provide building number"
+  },
+  "employment_details": {
+    "driverId.required": "Please provide driver id",
+    "driverId.exists": "Driver does not exists",
+    "workStatus.required": "Please provide work status",
+    "workStatus.exists": "Please provide valid work status id",
+    "workStatus.enum": "Please provide valid work status",
+    "professionalLevel.required": "Please provide professional level",
+    "professionalLevel.exists": "Please provide valid professional level id",
+    "professionalLevel.enum": "Please provide valid professional level",
+    "employerName.required": "Pleaes provide employer name",
+    "employerName.maxLength": "Maximum length reached for employer name",
+    "workAddress.required": "Please provide work address",
+    "workAddress.maxLength": "Maximum length reached for work address"
+  },
+  "identity_proof": {
+    "driverId.required": "Please provide driver id",
+    "driverId.exists": "Driver does not exists",
+    "identificationType.required": "Please provide identity type",
+    "identificationNo.required": "Pleaes provide identification number",
+    "identificationNo.maxLength": "Maximum length reached for identification number",
+    "expiryDate.required": "Please provide expiration date",
+    "expiryDate.regex": "Please provide valid expiration date",
+    "placeOfIssue.required": "Please provide place of issue",
+    "passport.required": "Please provide passport exists or not",
+    "passport.boolean": "Please provide valid passport",
+    "passportNumber.required": "Please provide passport number",
+    "passportNumber.maxLength": "Maximum length reached for passport number",
+    "passportIssueDate.required": "Please provide passport issue date",
+    "passportIssueDate.regex": "Please provide valid passport issue date",
+    "passportExpiryDate.required": "Please provide passport expiry date",
+    "passportExpiryDate.regex": "Please provide valid passport expiry date",
+    "passportIssuePlace.required": "Please provide passport issue place"
+  },
+  "other_details": {
+    "driverId.required": "Please provide driver id",
+    "driverId.exists": "Driver does not exists",
+    "usCitizenTaxpayer": {
+      "required": "Please select US citizen/taxpayer",
+      "boolean": "Please provide valid US citizen/taxpayer option"
+    },
+    "usGreenCardHolder": {
+      "required": "Please select US green card holder",
+      "boolean": "Please provide valid US green card option"
+    },
+    "relativesPoliticallyExposedPerson": {
+      "required": "Please select relatives exposed person option",
+      "boolean": "Please provide relatives exposed person option"
+    },
+    "relationshipWithCustomer": {
+      "required": "Please provide degree of relationship with customer",
+      "exists": "Please provide degree of relationship with customer",
+      "number": "Please provide valid relationship with customer"
+    },
+    "cardDeliveryLocation": {
+      "required": "Please provide card delivery location"
+    },
+    "languageToCommunicate": {
+      "required": "Please select language to communicate",
+      "exists": "Please provide valid language to communicate id",
+      "number": "Please provide valid language to communicate key"
+    }
+  }
+}

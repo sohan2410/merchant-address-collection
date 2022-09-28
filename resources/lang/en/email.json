@@ -1,0 +1,13 @@
+{
+  "resetPassword": {
+    "subject": "Reset Passcode Link",
+    "body": "Reset Passcode for Merchant Address Collection",
+    "greet": "Greetings"
+  },
+  "registerUser": {
+    "subject": "Register User Link",
+    "body": "Registration details for Merchant Address Collection",
+    "greet": "Greetings {name}",
+    "subBody": "Email: {email}      Passcode: {password}"
+  }
+}

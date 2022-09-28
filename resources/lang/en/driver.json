@@ -1,0 +1,45 @@
+{
+  "notFound": "Driver not found",
+  "found": "Driver found",
+  "driverDeleted": "Driver is deleted",
+  "provideValidProfilePic": "Please provide a valid profile picture",
+  "created": "Driver created",
+  "updated": "Driver updated",
+  "deleted": "Driver deleted",
+  "commDetails": {
+    "commDetailsDeleted": "This driver communication details was deleted",
+    "found": "Driver communication details found",
+    "notFound": "Driver communication details not found",
+    "alreadyExists": "This Driver communication details already exists",
+    "updated": "Driver communication details updated",
+    "deleted": "Driver communication details deleted",
+    "created": "Driver communication details created"
+  },
+  "employmentDetails": {
+    "employmentDetailsDeleted": "This driver employment details was deleted",
+    "found": "Driver employment details found",
+    "notFound": "Driver employment details not found",
+    "alreadyExists": "This Driver employment details already exists",
+    "updated": "Driver employment details updated",
+    "deleted": "Driver employment details deleted",
+    "created": "Driver communication details created"
+  },
+  "identityProofDetails": {
+    "detailsDeleted": "This driver identity proof details was deleted",
+    "found": "Driver identity proof details found",
+    "notFound": "Driver identity proof details not found",
+    "alreadyExists": "This Driver identity proof details already exists",
+    "updated": "Driver identity proof details updated",
+    "deleted": "Driver identity proof details deleted",
+    "created": "Driver identity proof details created"
+  },
+  "otherDetails": {
+    "otherDeleted": "This driver other details was deleted",
+    "found": "Driver other details found",
+    "notFound": "Driver other details not found",
+    "alreadyExists": "This Driver other details already exists",
+    "updated": "Driver other details updated",
+    "deleted": "Driver other details deleted",
+    "created": "Driver other details created"
+  }
+}

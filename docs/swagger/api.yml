@@ -1,0 +1,3874 @@
+openapi: 3.0.1
+info:
+  title: Merchant Address Collection API
+  description: Backend for Merchant Address Collection API
+  version: 1.0.0
+servers:
+  - url: /
+tags:
+  - name: Auth
+    description: Operations related to auth
+  - name: Stores
+    description: Operations related to stores
+  - name: Drivers
+    description: Operations related to Drivers
+  - name: Users
+    description: Operations related to users
+  - name: Configs
+    description: Operations realted to configs
+
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      servers:
+        - url: /
+      description: Login functionality
+      requestBody:
+        description: Username and password
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginBody'
+        required: true
+      responses:
+        200:
+          description: Login successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Login Successful
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      email:
+                        type: string
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      dob:
+                        type: string
+                      country:
+                        type: integer
+                      mobile:
+                        type: integer
+                      image:
+                        type: object
+                        properties:
+                          url:
+                            type: string
+                          name:
+                            type: string
+                          extname:
+                            type: string
+                      status:
+                        type: string
+                      gender:
+                        type: string
+                      role:
+                        type: object
+                        properties:
+                          description:
+                            type: string
+                      first_login:
+                        type: string
+                      fullName:
+                        type: string
+                      token:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                          token:
+                            type: string
+                          expires_at:
+                            type: string
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      servers:
+        - url: /
+      description: Register functionality
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Name, Email, Mobile, Country and Password
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterBody'
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Welcome onboard, your registration has been successful.
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      email:
+                        type: string
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      dob:
+                        type: string
+                      country:
+                        type: integer
+                      mobile:
+                        type: integer
+                      gender:
+                        type: string
+
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/reset-password:
+    post:
+      tags:
+        - Auth
+      servers:
+        - url: /
+      description: Reset Passowrd functionality
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: password and confirmation password
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordBody'
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Your password is updated
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/forgot-password:
+    post:
+      tags:
+        - Auth
+      servers:
+        - url: /
+      description: Forgot Passowrd functionality
+      requestBody:
+        description: username
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordBody'
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Reset password link sent to mail.
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/forgot-password/{email}:
+    patch:
+      tags:
+        - Auth
+      servers:
+        - url: /
+      description: Forgot Passowrd functionality
+      parameters:
+        - in: path
+          name: email
+          schema:
+            type: string
+          required: true
+          description: Email id of user
+        - in: query
+          name: signature
+          schema:
+            type: string
+          required: true
+          description: Signature
+      requestBody:
+        description: username
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordBody'
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Your password is updated
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/logout:
+    delete:
+      tags:
+        - Auth
+      servers:
+        - url: /
+      description: Logout functionality
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Logout successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Successfully logged out
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /user:
+    patch:
+      tags:
+        - Users
+      servers:
+        - url: /
+      description: User Update functionality
+      security:
+        - bearerAuth: []
+      # consumes:
+      #   - multipart/form-data
+      # parameters:
+      #   - in: formData
+      #     name: image
+      #     type: file
+      #     description: The file to upload.
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/UserImageUpdateBody'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: We have updated your account details
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      email:
+                        type: string
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      dob:
+                        type: string
+                      country:
+                        type: integer
+                      mobile:
+                        type: integer
+                      image:
+                        type: object
+                        properties:
+                          url:
+                            type: string
+                          name:
+                            type: string
+                          extname:
+                            type: string
+                      status:
+                        type: string
+                      gender:
+                        type: string
+                      role:
+                        type: object
+                        properties:
+                          description:
+                            type: string
+                      first_login:
+                        type: string
+                      fullName:
+                        type: string
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /user/deactivate:
+    post:
+      tags:
+        - Users
+      servers:
+        - url: /
+      description: User status update
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: User status updated
+  /store:
+    post:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      description: Store functionality
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreBody'
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store created
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      store_category:
+                        type: string
+                      category:
+                        type: string
+                      ownership_type:
+                        type: string
+                      approach_date:
+                        type: string
+                      payment_mode_accepted:
+                        type: object
+                        properties:
+                          cash:
+                            type: boolean
+                          debit:
+                            type: boolean
+                          others:
+                            type: string
+                      opening_timings:
+                        type: string
+                      closing_timings:
+                        type: string
+                      users:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          email:
+                            type: string
+                          first_name:
+                            type: string
+                          last_name:
+                            type: string
+                          country:
+                            type: number
+                          mobile:
+                            type: number
+                      storeImage:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                            name:
+                              type: string
+                            extname:
+                              type: string
+
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      description: Get stores functionality
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: false
+          description: Page of pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+          description: Limit of pagination
+        - in: query
+          name: status
+          schema:
+            type: string
+          required: false
+          description: Status of the store
+        - in: query
+          name: category
+          schema:
+            type: string
+          required: false
+          description: Category of the store
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: false
+          description: Name of the store
+        - in: query
+          name: user
+          schema:
+            type: string
+          required: false
+          description: User Id
+        - in: query
+          name: email
+          schema:
+            type: string
+          required: false
+          description: Email of the user
+        - in: query
+          name: approachdateGte
+          schema:
+            type: string
+          required: false
+          description: Approach date of the store
+        - in: query
+          name: approachdateGt
+          schema:
+            type: string
+          required: false
+          description: Approach date of the store
+        - in: query
+          name: approachdateLte
+          schema:
+            type: string
+          required: false
+          description: Approach date of the store
+        - in: query
+          name: approachdateLt
+          schema:
+            type: string
+          required: false
+          description: Approach date of the store
+        - in: query
+          name: region
+          schema:
+            type: string
+          required: false
+          description: Region of the store
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: number
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      meta:
+                        type: object
+                        properties:
+                          total:
+                            type: number
+                          per_page:
+                            type: number
+                          current_page:
+                            type: number
+                          last_page:
+                            type: number
+                          first_page:
+                            type: number
+                          first_page_url:
+                            type: string
+                          next_page_url:
+                            type: string
+                          previous_page_url:
+                            type: string
+                      data:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            store_category:
+                              type: string
+                            category:
+                              type: string
+                            ownership_type:
+                              type: string
+                            approach_date:
+                              type: string
+                            payment_mode_accepted:
+                              type: object
+                              properties:
+                                cash:
+                                  type: boolean
+                                debit:
+                                  type: boolean
+                                others:
+                                  type: string
+                            opening_timings:
+                              type: string
+                            closing_timings:
+                              type: string
+                            logo:
+                              type: object
+                              properties:
+                                url:
+                                  type: string
+                                name:
+                                  type: string
+                                extname:
+                                  type: string
+                                size:
+                                  type: string
+                                mimetype:
+                                  type: string
+                            users:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                email:
+                                  type: string
+                                first_name:
+                                  type: string
+                                last_name:
+                                  type: string
+                                country:
+                                  type: number
+                                mobile:
+                                  type: number
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /store/{id}:
+    get:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the store
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store found
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      store_category:
+                        type: string
+                      category:
+                        type: string
+                      ownership_type:
+                        type: string
+                      approach_date:
+                        type: string
+                      payment_mode_accepted:
+                        type: object
+                        properties:
+                          cash:
+                            type: boolean
+                          debit:
+                            type: boolean
+                          others:
+                            type: string
+                      opening_timings:
+                        type: string
+                      closing_timings:
+                        type: string
+                      users:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          email:
+                            type: string
+                          first_name:
+                            type: string
+                          last_name:
+                            type: string
+                          country:
+                            type: number
+                          mobile:
+                            type: number
+                      storeImage:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                            name:
+                              type: string
+                            extname:
+                              type: string
+                      storeAddress:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          google_location:
+                            type: object
+                            properties:
+                              lat:
+                                type: string
+                              long:
+                                type: string
+                          address_line1:
+                            type: string
+                          address_line2:
+                            type: string
+                          locality:
+                            type: string
+                          city:
+                            type: string
+                          region:
+                            type: string
+                          no_of_toll_booths_on_route:
+                            type: string
+                      personnelDetail:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            category:
+                              type: string
+                            name:
+                              type: string
+                            contact_no:
+                              type: string
+                            email:
+                              type: string
+                      storeContractDetail:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          days_for_onboarding:
+                            type: number
+                          status:
+                            type: string
+                          start_date:
+                            type: string
+                          payment_terms:
+                            type: string
+                          merchant_discount_rate:
+                            type: string
+                      storeAdditionalDetail:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          no_of_smart_phones:
+                            type: string
+                          no_of_pos_machines:
+                            type: string
+                          no_of_attendants:
+                            type: string
+                          internet_connectivity:
+                            type: boolean
+                          comments:
+                            type: string
+                          socialLinks:
+                            type: object
+                            properties:
+                              facebook:
+                                type: string
+                              instagram:
+                                type: string
+                              twitter:
+                                type: string
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      description: Update store details
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the store
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreBody'
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store found
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      store_category:
+                        type: string
+                      category:
+                        type: string
+                      ownership_type:
+                        type: string
+                      approach_date:
+                        type: string
+                      payment_mode_accepted:
+                        type: object
+                        properties:
+                          cash:
+                            type: boolean
+                          debit:
+                            type: boolean
+                          others:
+                            type: string
+                      opening_timings:
+                        type: string
+                      closing_timings:
+                        type: string
+                      users:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          email:
+                            type: string
+                          first_name:
+                            type: string
+                          last_name:
+                            type: string
+                          country:
+                            type: number
+                          mobile:
+                            type: number
+
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the store
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store deleted
+
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /store/image:
+    post:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      description: Store image upload functionality
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                images:
+                  type: string
+                  format: binary
+                storeId:
+                  type: string
+
+        # content:
+        #   application/json:
+        #     schema:
+        #       $ref: '#/components/schemas/StoreImageBody'
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /store/image/{id}:
+    get:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      description: Get store images by store id
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the store
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      description: Update store details
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Store image id
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/StoreImageUpdateBody'
+      responses:
+        200:
+          description: Login successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      description: Delete image of store
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Store Image id
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /store/address:
+    post:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      description: Store functionality
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreAddressBody'
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store Address Created
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      google_location:
+                        type: object
+                        properties:
+                          lat:
+                            type: string
+                          long:
+                            type: string
+                      address_line1:
+                        type: string
+                      address_line2:
+                        type: string
+                      locality:
+                        type: string
+                      city:
+                        type: string
+                      region:
+                        type: string
+                      no_of_toll_booths_on_route:
+                        type: string
+                      store:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          store_category:
+                            type: string
+                          category:
+                            type: string
+                          ownership_type:
+                            type: string
+                          approach_date:
+                            type: string
+                          payment_mode_accepted:
+                            type: object
+                            properties:
+                              cash:
+                                type: boolean
+                              debit:
+                                type: boolean
+                              others:
+                                type: string
+                          opening_timings:
+                            type: string
+                          closing_timings:
+                            type: string
+
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    # get:
+    #   tags:
+    #     - Stores
+    #   servers:
+    #     - url: /
+    #   description: Get stores functionality
+    #   responses:
+    #     200:
+    #       description: Success Response
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/SuccessResponse'
+    #     400:
+    #       description: Failure Response
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/Error'
+
+  /store/address/{id}:
+    get:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the store address
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store found
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      google_location:
+                        type: object
+                        properties:
+                          lat:
+                            type: string
+                          long:
+                            type: string
+                      address_line1:
+                        type: string
+                      address_line2:
+                        type: string
+                      locality:
+                        type: string
+                      city:
+                        type: string
+                      region:
+                        type: string
+                      no_of_toll_booths_on_route:
+                        type: string
+                      store:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          store_category:
+                            type: string
+                          category:
+                            type: string
+                          ownership_type:
+                            type: string
+                          approach_date:
+                            type: string
+                          payment_mode_accepted:
+                            type: object
+                            properties:
+                              cash:
+                                type: boolean
+                              debit:
+                                type: boolean
+                              others:
+                                type: string
+                          opening_timings:
+                            type: string
+                          closing_timings:
+                            type: string
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      description: Update store details
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the store address
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: integer
+                  example: 1
+                message:
+                  type: string
+                  example: Store updated
+                data:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    google_location:
+                      type: object
+                      properties:
+                        lat:
+                          type: string
+                        long:
+                          type: string
+                    address_line1:
+                      type: string
+                    address_line2:
+                      type: string
+                    locality:
+                      type: string
+                    city:
+                      type: string
+                    region:
+                      type: string
+                    no_of_toll_booths_on_route:
+                      type: string
+                    store:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        store_category:
+                          type: string
+                        category:
+                          type: string
+                        ownership_type:
+                          type: string
+                        approach_date:
+                          type: string
+                        payment_mode_accepted:
+                          type: object
+                          properties:
+                            cash:
+                              type: boolean
+                            debit:
+                              type: boolean
+                            others:
+                              type: string
+                        opening_timings:
+                          type: string
+                        closing_timings:
+                          type: string
+      responses:
+        200:
+          description: Login successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the store address
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store deleted
+
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /store/personnel-details:
+    post:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      description: Store functionality
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StorePersonnelBody'
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store Personnel Details created
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      category:
+                        type: string
+                      name:
+                        type: string
+                      contact_no:
+                        type: string
+                      email:
+                        type: string
+                      store:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          store_category:
+                            type: string
+                          category:
+                            type: string
+                          ownership_type:
+                            type: string
+                          approach_date:
+                            type: string
+                          payment_mode_accepted:
+                            type: object
+                            properties:
+                              cash:
+                                type: boolean
+                              debit:
+                                type: boolean
+                              others:
+                                type: string
+                          opening_timings:
+                            type: string
+                          closing_timings:
+                            type: string
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    # get:
+    #   tags:
+    #     - Stores
+    #   servers:
+    #     - url: /
+    #   description: Get stores functionality
+    #   responses:
+    #     200:
+    #       description: Success Response
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/SuccessResponse'
+    #     400:
+    #       description: Failure Response
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/Error'
+
+  /store/personnel-details/{id}:
+    get:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the store personnel details
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store Personnel Details found
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      category:
+                        type: string
+                      name:
+                        type: string
+                      contact_no:
+                        type: string
+                      email:
+                        type: string
+                      store:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          store_category:
+                            type: string
+                          category:
+                            type: string
+                          ownership_type:
+                            type: string
+                          approach_date:
+                            type: string
+                          payment_mode_accepted:
+                            type: object
+                            properties:
+                              cash:
+                                type: boolean
+                              debit:
+                                type: boolean
+                              others:
+                                type: string
+                          opening_timings:
+                            type: string
+                          closing_timings:
+                            type: string
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      description: Update store details
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the store personnel details
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StorePersonnelUpdateBody'
+      responses:
+        200:
+          description: Login successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store Personnel Details updated
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      category:
+                        type: string
+                      name:
+                        type: string
+                      contact_no:
+                        type: string
+                      email:
+                        type: string
+                      store:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          store_category:
+                            type: string
+                          category:
+                            type: string
+                          ownership_type:
+                            type: string
+                          approach_date:
+                            type: string
+                          payment_mode_accepted:
+                            type: object
+                            properties:
+                              cash:
+                                type: boolean
+                              debit:
+                                type: boolean
+                              others:
+                                type: string
+                          opening_timings:
+                            type: string
+                          closing_timings:
+                            type: string
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the store personnel details
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store Personnel Details deleted
+
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /store/contract-details:
+    post:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      description: Store functionality
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreContractBody'
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store Personnel Details created
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      status:
+                        type: string
+                      start_date:
+                        type: string
+                      payment_terms:
+                        type: string
+                      merchant_discount_rate:
+                        type: string
+                      store:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          store_category:
+                            type: string
+                          category:
+                            type: string
+                          ownership_type:
+                            type: string
+                          approach_date:
+                            type: string
+                          payment_mode_accepted:
+                            type: object
+                            properties:
+                              cash:
+                                type: boolean
+                              debit:
+                                type: boolean
+                              others:
+                                type: string
+                          opening_timings:
+                            type: string
+                          closing_timings:
+                            type: string
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    # get:
+    #   tags:
+    #     - Stores
+    #   servers:
+    #     - url: /
+    #   description: Get stores functionality
+    #   responses:
+    #     200:
+    #       description: Success Response
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/SuccessResponse'
+    #     400:
+    #       description: Failure Response
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/Error'
+
+  /store/contract-details/{id}:
+    get:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the store contract details
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store Personnel Details found
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      status:
+                        type: string
+                      start_date:
+                        type: string
+                      payment_terms:
+                        type: string
+                      merchant_discount_rate:
+                        type: string
+                      store:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          store_category:
+                            type: string
+                          category:
+                            type: string
+                          ownership_type:
+                            type: string
+                          approach_date:
+                            type: string
+                          payment_mode_accepted:
+                            type: object
+                            properties:
+                              cash:
+                                type: boolean
+                              debit:
+                                type: boolean
+                              others:
+                                type: string
+                          opening_timings:
+                            type: string
+                          closing_timings:
+                            type: string
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      description: Update store details
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the store contract details
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreContractUpdateBody'
+      responses:
+        200:
+          description: Login successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store Personnel Details updated
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      status:
+                        type: string
+                      start_date:
+                        type: string
+                      payment_terms:
+                        type: string
+                      merchant_discount_rate:
+                        type: string
+                      store:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          store_category:
+                            type: string
+                          category:
+                            type: string
+                          ownership_type:
+                            type: string
+                          approach_date:
+                            type: string
+                          payment_mode_accepted:
+                            type: object
+                            properties:
+                              cash:
+                                type: boolean
+                              debit:
+                                type: boolean
+                              others:
+                                type: string
+                          opening_timings:
+                            type: string
+                          closing_timings:
+                            type: string
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the store contract details
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store Personnel Details deleted
+
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /store/additional-details:
+    post:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      description: Store functionality
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreAdditionalBody'
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store Additional Details created
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      no_of_smart_phones:
+                        type: string
+                      no_of_pos_machines:
+                        type: string
+                      no_of_attendants:
+                        type: string
+                      internet_connectivity:
+                        type: boolean
+                      comments:
+                        type: string
+                      socialLinks:
+                        type: object
+                        properties:
+                          facebook:
+                            type: string
+                          instagram:
+                            type: string
+                          twitter:
+                            type: string
+                      store:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          store_category:
+                            type: string
+                          category:
+                            type: string
+                          ownership_type:
+                            type: string
+                          approach_date:
+                            type: string
+                          payment_mode_accepted:
+                            type: object
+                            properties:
+                              cash:
+                                type: boolean
+                              debit:
+                                type: boolean
+                              others:
+                                type: string
+                          opening_timings:
+                            type: string
+                          closing_timings:
+                            type: string
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    # get:
+    #   tags:
+    #     - Stores
+    #   servers:
+    #     - url: /
+    #   description: Get stores functionality
+    #   responses:
+    #     200:
+    #       description: Success Response
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/SuccessResponse'
+    #     400:
+    #       description: Failure Response
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/Error'
+
+  /store/additional-details/{id}:
+    get:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the store additional details
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store Additional Details found
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      no_of_smart_phones:
+                        type: string
+                      no_of_pos_machines:
+                        type: string
+                      no_of_attendants:
+                        type: string
+                      internet_connectivity:
+                        type: boolean
+                      comments:
+                        type: string
+                      socialLinks:
+                        type: object
+                        properties:
+                          facebook:
+                            type: string
+                          instagram:
+                            type: string
+                          twitter:
+                            type: string
+                      store:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          store_category:
+                            type: string
+                          category:
+                            type: string
+                          ownership_type:
+                            type: string
+                          approach_date:
+                            type: string
+                          payment_mode_accepted:
+                            type: object
+                            properties:
+                              cash:
+                                type: boolean
+                              debit:
+                                type: boolean
+                              others:
+                                type: string
+                          opening_timings:
+                            type: string
+                          closing_timings:
+                            type: string
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      tags:
+        - Stores
+      servers:
+        - url: /
+
+      description: Update store details
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the store additional details
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreAdditionalUpdateBody'
+      responses:
+        200:
+          description: Login successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store Additional Details updated
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      no_of_smart_phones:
+                        type: string
+                      no_of_pos_machines:
+                        type: string
+                      no_of_attendants:
+                        type: string
+                      internet_connectivity:
+                        type: boolean
+                      comments:
+                        type: string
+                      socialLinks:
+                        type: object
+                        properties:
+                          facebook:
+                            type: string
+                          instagram:
+                            type: string
+                          twitter:
+                            type: string
+                      store:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          store_category:
+                            type: string
+                          category:
+                            type: string
+                          ownership_type:
+                            type: string
+                          approach_date:
+                            type: string
+                          payment_mode_accepted:
+                            type: object
+                            properties:
+                              cash:
+                                type: boolean
+                              debit:
+                                type: boolean
+                              others:
+                                type: string
+                          opening_timings:
+                            type: string
+                          closing_timings:
+                            type: string
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the store additional details
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store Additional Details deleted
+
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /store/services:
+    post:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      description: Store functionality
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                storeId:
+                  type: string
+                serviceData:
+                  type: object
+                  properties:
+                    gasStation:
+                      type: object
+                      properties:
+                        groceryStore:
+                          type: boolean
+                        foodCourt:
+                          type: boolean
+                        restArea:
+                          type: boolean
+                        parkingFacility:
+                          type: boolean
+                        oilChange:
+                          type: boolean
+                        truckWash:
+                          type: boolean
+                        vendingMachines:
+                          type: boolean
+                        petrolTypesSold:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              petrolType:
+                                type: string
+                              petrolPrice:
+                                type: number
+                              noOfPumps:
+                                type: number
+                        typeMostlyBoughtByDriver:
+                          type: array
+                          items:
+                            type: string
+                status:
+                  type: string
+
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store services created
+                  data:
+                    type: object
+                    properties:
+                      gasStation:
+                        type: object
+                        properties:
+                          groceryStore:
+                            type: boolean
+                          foodCourt:
+                            type: boolean
+                          restArea:
+                            type: boolean
+                          parkingFacility:
+                            type: boolean
+                          oilChange:
+                            type: boolean
+                          truckWash:
+                            type: boolean
+                          vendingMachines:
+                            type: boolean
+                          petrolTypesSold:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                petrolType:
+                                  type: string
+                                petrolPrice:
+                                  type: number
+                                noOfPumps:
+                                  type: number
+                          typeMostlyBoughtByDriver:
+                            type: array
+                            items:
+                              type: string
+
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    # get:
+    #   tags:
+    #     - Stores
+    #   servers:
+    #     - url: /
+    #   description: Get stores functionality
+    #   responses:
+    #     200:
+    #       description: Success Response
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/SuccessResponse'
+    #     400:
+    #       description: Failure Response
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/Error'
+
+  /store/services/{id}:
+    get:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the store services
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store services found
+                  serviceData:
+                    type: object
+                    properties:
+                      gasStation:
+                        type: object
+                        properties:
+                          groceryStore:
+                            type: boolean
+                          foodCourt:
+                            type: boolean
+                          restArea:
+                            type: boolean
+                          parkingFacility:
+                            type: boolean
+                          oilChange:
+                            type: boolean
+                          truckWash:
+                            type: boolean
+                          vendingMachines:
+                            type: boolean
+                          petrolTypesSold:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                petrolType:
+                                  type: string
+                                petrolPrice:
+                                  type: number
+                                noOfPumps:
+                                  type: number
+                          typeMostlyBoughtByDriver:
+                            type: array
+                            items:
+                              type: string
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      description: Update store details
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the driver
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                serviceData:
+                  type: object
+                  properties:
+                    gasStation:
+                      type: object
+                      properties:
+                        groceryStore:
+                          type: boolean
+                        foodCourt:
+                          type: boolean
+                        restArea:
+                          type: boolean
+                        parkingFacility:
+                          type: boolean
+                        oilChange:
+                          type: boolean
+                        truckWash:
+                          type: boolean
+                        vendingMachines:
+                          type: boolean
+                        petrolTypesSold:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              petrolType:
+                                type: string
+                              petrolPrice:
+                                type: number
+                              noOfPumps:
+                                type: number
+                        typeMostlyBoughtByDriver:
+                          type: array
+                          items:
+                            type: string
+                status:
+                  type: string
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store services updated
+                  data:
+                    type: object
+                    properties:
+                      gasStation:
+                        type: object
+                        properties:
+                          groceryStore:
+                            type: boolean
+                          foodCourt:
+                            type: boolean
+                          restArea:
+                            type: boolean
+                          parkingFacility:
+                            type: boolean
+                          oilChange:
+                            type: boolean
+                          truckWash:
+                            type: boolean
+                          vendingMachines:
+                            type: boolean
+                          petrolTypesSold:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                petrolType:
+                                  type: string
+                                petrolPrice:
+                                  type: number
+                                noOfPumps:
+                                  type: number
+                          typeMostlyBoughtByDriver:
+                            type: array
+                            items:
+                              type: string
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the driver
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Driver deleted
+
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /store/deactivate:
+    post:
+      tags:
+        - Stores
+      servers:
+        - url: /
+      description: User status update
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                storeId:
+                  type: string
+      responses:
+        200:
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Store status updated
+
+  /driver:
+    post:
+      tags:
+        - Drivers
+      servers:
+        - url: /
+      description: Driver functionality
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DriverBody'
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Driver created
+                  data:
+                    type: object
+
+  /driver/{id}:
+    get:
+      tags:
+        - Drivers
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the driver
+        - in: query
+          name: audit
+          schema:
+            type: boolean
+          required: false
+          description: Audit details
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Driver found
+                  data:
+                    type: object
+
+    patch:
+      tags:
+        - Drivers
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      description: Update driver details
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the driver
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DriverUpdateBody'
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Driver details updated
+                  data:
+                    type: object
+
+    delete:
+      tags:
+        - Drivers
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the driver
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Driver deleted
+
+  /driver/communication-details:
+    post:
+      tags:
+        - Drivers
+      servers:
+        - url: /
+      description: Driver functionality
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DriverCommunicationDetailsBody'
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Driver communication details created
+                  data:
+                    type: object
+
+  /driver/communication-details/{id}:
+    get:
+      tags:
+        - Drivers
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the driver
+        - in: query
+          name: audit
+          schema:
+            type: boolean
+          required: false
+          description: Audit details
+
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Driver communication details found
+                  data:
+                    type: object
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      tags:
+        - Drivers
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      description: Update driver communication details
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the driver
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DriverCommunicationDetailsUpdateBody'
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Driver communication details updated
+                  data:
+                    type: object
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /driver/employment-details:
+    post:
+      tags:
+        - Drivers
+      servers:
+        - url: /
+      description: Driver functionality
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DriverEmploymentDetailsBody'
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Driver employment details created
+                  data:
+                    type: object
+
+  /driver/employment-details/{id}:
+    get:
+      tags:
+        - Drivers
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the driver
+        - in: query
+          name: audit
+          schema:
+            type: boolean
+          required: false
+          description: Audit details
+
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Driver employment details found
+                  data:
+                    type: object
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      tags:
+        - Drivers
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      description: Update driver communication details
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the driver
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DriverEmploymentDetailsUpdateBody'
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Driver employment details updated
+                  data:
+                    type: object
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /driver/other-details:
+    post:
+      tags:
+        - Drivers
+      servers:
+        - url: /
+      description: Driver functionality
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DriverOtherDetailsBody'
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Driver other details created
+                  data:
+                    type: object
+
+  /driver/other-details/{id}:
+    get:
+      tags:
+        - Drivers
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the driver
+        - in: query
+          name: audit
+          schema:
+            type: boolean
+          required: false
+          description: Audit details
+
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Driver other details found
+                  data:
+                    type: object
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      tags:
+        - Drivers
+      servers:
+        - url: /
+      security:
+        - bearerAuth: []
+      description: Update driver other details
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id of the driver
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DriverOtherDetailsUpdateBody'
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Driver other details updated
+                  data:
+                    type: object
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /config:
+    get:
+      tags:
+        - Configs
+      servers:
+        - url: /
+      responses:
+        200:
+          description: Success Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: integer
+                    example: 1
+                  message:
+                    type: string
+                    example: Configs data found
+                  data:
+                    type: object
+        400:
+          description: Failure Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        success:
+          type: number
+          example: 0
+        message:
+          type: string
+          example: Response error message
+      additionalProperties: true
+
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: number
+          example: 1
+        message:
+          type: string
+          example: Response Success Message
+      additionalProperties: true
+
+    LoginBody:
+      required:
+        - username
+        - password
+      type: object
+      properties:
+        username:
+          type: string
+          example: test.user@moxey.ai
+        password:
+          type: string
+          example: 1234
+
+    RegisterBody:
+      required:
+        - firstName
+        - lastName
+        - email
+        - password
+        - password_confirmation
+        - dob
+        - mobile
+        - country
+        - gender
+      type: object
+      properties:
+        firstName:
+          type: string
+          example: Test
+        lastName:
+          type: string
+          example: User
+        email:
+          type: string
+          example: test.user@moxey.ai
+        password:
+          type: string
+          example: 1234
+        password_confirmation:
+          type: string
+          example: 1234
+        dob:
+          type: string
+          example: '2022-01-01'
+        mobile:
+          type: number
+          example: 9876543210
+        country:
+          type: string
+          example: India
+        countryCode:
+          type: number
+          example: 91
+        gender:
+          type: string
+          example: Male
+
+    ResetPasswordBody:
+      required:
+        - password
+        - password_confirmation
+      type: object
+      properties:
+        password:
+          type: string
+          example: 1234
+        password_confirmation:
+          type: string
+          example: 1234
+
+    ForgotPasswordBody:
+      required:
+        - username
+      type: object
+      properties:
+        username:
+          type: string
+          example: test.user@moxey.ai
+
+    StoreBody:
+      required:
+        - name
+        - storeCategory
+        - ownershipType
+      type: object
+      properties:
+        name:
+          type: string
+          example: Moxey
+        storeCategory:
+          type: string
+          example: Petrol
+        ownershipType:
+          type: string
+          example: Franchise
+        category:
+          type: string
+          example: Individual
+        approachDate:
+          type: string
+          example: '2022-01-01'
+        openingTimings:
+          type: string
+          example: '9:00'
+        closingTimings:
+          type: string
+          example: '21:00'
+        paymentModeAccepted:
+          type: object
+          properties:
+            cash:
+              type: boolean
+              example: true
+            debit:
+              type: boolean
+              example: true
+            others:
+              type: string
+              example: 'GPay, PhonePe'
+        status:
+          type: string
+          example: active
+
+    StoreAddressBody:
+      required:
+        - googleLocation
+        - addressLine1
+        - addressLine2
+        - locality
+        - city
+        - region
+        - noOfTollBoothsOnRoute
+        - storeId
+      type: object
+      properties:
+        storeId:
+          type: string
+        googleLocation:
+          type: object
+          properties:
+            lat:
+              type: string
+              example: 29.46879
+            long:
+              type: string
+              example: 56.4896
+        addressLine1:
+          type: string
+          example: example
+        addressLine2:
+          type: string
+          example: example
+        locality:
+          type: string
+        city:
+          type: string
+          example: Bangalore
+        region:
+          type: string
+          example: Highway
+        noOfTollBoothsOnRoute:
+          type: number
+          example: 2
+
+    StoreAddressUpdateBody:
+      required:
+        - storeId
+        - googleLocation
+        - addressLine1
+        - addressLine2
+        - locality
+        - city
+        - region
+        - noOfTollBoothsOnRoute
+      type: object
+      properties:
+        storeId:
+          type: string
+        googleLocation:
+          type: object
+          properties:
+            lat:
+              type: string
+              example: 29.46879
+            long:
+              type: string
+              example: 56.4896
+        addressLine1:
+          type: string
+          example: example
+        addressLine2:
+          type: string
+          example: example
+        locality:
+          type: string
+        city:
+          type: string
+          example: Bangalore
+        region:
+          type: string
+          example: Highway
+        noOfTollBoothsOnRoute:
+          type: number
+          example: 2
+
+    StorePersonnelBody:
+      required:
+        - category
+        - name
+        - contactNo
+        - email
+        - storeId
+      type: object
+      properties:
+        storeId:
+          type: string
+        category:
+          type: string
+          example: 'Store Manager'
+        name:
+          type: string
+          example: 'Test Name'
+        contactNo:
+          type: string
+          example: '+919873216540'
+        email:
+          type: string
+          example: 'tet.user@moxey.ai'
+
+    StorePersonnelUpdateBody:
+      required:
+        - storeId
+        - category
+        - name
+        - contactNo
+        - email
+      type: object
+      properties:
+        storeId:
+          type: string
+        category:
+          type: string
+          example: 'Store Manager'
+        name:
+          type: string
+          example: 'Test Name'
+        contactNo:
+          type: string
+          example: '+919873216540'
+        email:
+          type: string
+          example: 'tet.user@moxey.ai'
+
+    StoreContractBody:
+      required:
+        - daysForOnBoarding
+        - status
+        - startDate
+        - paymentTerms
+        - merchantDiscountRate
+        - storeId
+      type: object
+      properties:
+        storeId:
+          type: string
+        daysForOnBoarding:
+          type: number
+          example: 30
+        status:
+          type: string
+          example: signed
+        startDate:
+          type: string
+          example: '2022-01-01'
+        paymentTerms:
+          type: string
+          example: 'Advance'
+        merchantDiscountRate:
+          type: number
+          example: 5.25
+
+    StoreContractUpdateBody:
+      required:
+        - storeId
+        - daysForOnBoarding
+        - status
+        - startDate
+        - paymentTerms
+        - merchantDiscountRate
+      type: object
+      properties:
+        storeId:
+          type: string
+        daysForOnBoarding:
+          type: number
+          example: 30
+        status:
+          type: string
+          example: signed
+        startDate:
+          type: string
+          example: '2022-01-01'
+        paymentTerms:
+          type: string
+          example: 'Advance'
+        merchantDiscountRate:
+          type: number
+          example: 5.25
+
+    StoreAdditionalBody:
+      required:
+        - noOfSmartPhones
+        - noOfPosMachines
+        - noOfAttendants
+        - internetConnectivity
+        - comments
+        - merchantDiscountRate
+        - storeId
+      type: object
+      properties:
+        storeId:
+          type: string
+        noOfSmartPhones:
+          type: number
+          example: 4
+        noOfPosMachines:
+          type: number
+          example: 1
+        noOfAttendants:
+          type: number
+          example: 3
+        internetConnectivity:
+          type: boolean
+          example: true
+        comments:
+          type: string
+          example: 'example'
+        socialLinks:
+          type: object
+          properties:
+            facebook:
+              type: string
+              example: 'www.facebook.com/example'
+            instagram:
+              type: string
+              example: 'www.instagram.com/example'
+
+    StoreAdditionalUpdateBody:
+      required:
+        - storeId
+        - noOfSmartPhones
+        - noOfPosMachines
+        - noOfAttendants
+        - internetConnectivity
+        - comments
+        - merchantDiscountRate
+      type: object
+      properties:
+        storeId:
+          type: string
+        noOfSmartPhones:
+          type: number
+          example: 4
+        noOfPosMachines:
+          type: number
+          example: 1
+        noOfAttendants:
+          type: number
+          example: 3
+        internetConnectivity:
+          type: boolean
+          example: true
+        comments:
+          type: string
+          example: 'example'
+        socialLinks:
+          type: object
+          properties:
+            facebook:
+              type: string
+              example: 'www.facebook.com/example'
+            instagram:
+              type: string
+              example: 'www.instagram.com/example'
+
+    DriverBody:
+      required:
+        - firstNameEn
+        - lastNameEn
+        - nameOnCard
+        - gender
+        - dob
+        - countryCode
+        - mobile
+        - nationality
+        - birthCountry
+        - birthCity
+
+      type: object
+      properties:
+        firstNameEn:
+          type: string
+        middleNameEn:
+          type: string
+        lastNameEn:
+          type: string
+        firstNameAr:
+          type: string
+        middleNameAr:
+          type: string
+        lastNameAr:
+          type: string
+        nameOnCard:
+          type: string
+        gender:
+          type: string
+        dob:
+          type: string
+          example: '01/01/2022'
+        countryCode:
+          type: number
+          example: 91
+        mobile:
+          type: number
+        nationality:
+          type: string
+        birthCountry:
+          type: string
+        birthCity:
+          type: string
+        status:
+          type: string
+          example: active
+        image:
+          type: string
+          format: binary
+
+    DriverUpdateBody:
+      type: object
+      properties:
+        firstNameEn:
+          type: string
+        middleNameEn:
+          type: string
+        lastNameEn:
+          type: string
+        firstNameAr:
+          type: string
+        middleNameAr:
+          type: string
+        lastNameAr:
+          type: string
+        nameOnCard:
+          type: string
+        gender:
+          type: string
+        dob:
+          type: string
+          example: '01/01/2022'
+        countryCode:
+          type: number
+          example: 91
+        mobile:
+          type: number
+        nationality:
+          type: string
+        birthCountry:
+          type: string
+        birthCity:
+          type: string
+        status:
+          type: string
+          example: active
+        image:
+          type: string
+          format: binary
+
+    DriverCommunicationDetailsBody:
+      required:
+        - driverId
+        - country
+        - city
+        - zipCode
+
+      type: object
+      properties:
+        driverId:
+          type: string
+        streetName:
+          type: string
+        country:
+          type: string
+        city:
+          type: string
+        zipCode:
+          type: string
+        buildingNo:
+          type: string
+
+    DriverCommunicationDetailsUpdateBody:
+      type: object
+      properties:
+        streetName:
+          type: string
+        country:
+          type: string
+        city:
+          type: string
+        zipCode:
+          type: string
+        buildingNo:
+          type: string
+
+    DriverEmploymentDetailsBody:
+      required:
+        - driverId
+
+      type: object
+      properties:
+        driverId:
+          type: string
+        workStatus:
+          type: number
+          example: 1
+        professionalLevel:
+          type: number
+          example: 3
+        employerName:
+          type: string
+        workAddress:
+          type: string
+
+    DriverEmploymentDetailsUpdateBody:
+      type: object
+      properties:
+        workStatus:
+          type: number
+        professionalLevel:
+          type: number
+          example: 1
+        employerName:
+          type: string
+          example: 3
+        workAddress:
+          type: string
+
+    DriverOtherDetailsBody:
+      required:
+        - driverId
+        - usCitizenTaxpayer
+        - usGreenCardHolder
+        - relativesPoliticallyExposedPerson
+        - cardDeliveryLocation
+        - languageToCommunicate
+      type: object
+      properties:
+        driverId:
+          type: string
+        usCitizenTaxpayer:
+          type: boolean
+        usGreenCardHolder:
+          type: boolean
+        relativesPoliticallyExposedPerson:
+          type: boolean
+        relationshipWithCustomer:
+          type: number
+        cardDeliveryLocation:
+          type: string
+        languageToCommunicate:
+          type: number
+
+    DriverOtherDetailsUpdateBody:
+      type: object
+      properties:
+        workStatus:
+          type: number
+        professionalLevel:
+          type: number
+          example: 1
+        employerName:
+          type: string
+          example: 3
+        workAddress:
+          type: string

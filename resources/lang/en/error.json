@@ -1,0 +1,7 @@
+{
+  "notFound": "It's look like you've reached a URL that doesn't exists.",
+  "unauthorized": "Unauthorized access",
+  "internalServerError": "Internal server error occured",
+  "incorrectValue": "Please provide a valid value",
+  "fileUploadFailed": "File upload failed"
+}

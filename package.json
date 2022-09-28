@@ -1,0 +1,90 @@
+{
+  "name": "merchant-address-collection",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node ace serve --watch",
+    "build": "node ace build --production  && yarn run create-sym",
+    "run": "yarn && yarn build && cd build && npm i && forever stopall && forever start server.js",
+    "start": "node server.js",
+    "lint": "eslint . --ext=.ts",
+    "format": "prettier --write .",
+    "create-sym": "ln -s /moxey/wallet/moxey_agent/store $(pwd)/build && ln -s $(pwd)/.env $(pwd)/build",
+    "pull": "git pull origin master",
+    "kill": "pkill node",
+    "rm": "node ace migration:run",
+    "mm": "node ace make:migration",
+    "ms": "node ace seeders:run",
+    "rs": "node ace db:seed",
+    "mc": "node ace make:controller",
+    "mv": "node ace make:validator",
+    "mmm": "node ace make:model",
+    "mrb": "node ace migration:rollback"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:adonis/typescriptApp",
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error"
+      ]
+    }
+  },
+  "eslintIgnore": [
+    "build"
+  ],
+  "prettier": {
+    "trailingComma": "es5",
+    "semi": false,
+    "singleQuote": true,
+    "useTabs": false,
+    "quoteProps": "consistent",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "printWidth": 100
+  },
+  "devDependencies": {
+    "@adonisjs/assembler": "^5.6.2",
+    "@japa/preset-adonis": "^1.0.15",
+    "@japa/runner": "^2.0.7",
+    "adonis-preset-ts": "^2.1.0",
+    "eslint": "^8.15.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-adonis": "^2.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "pino-pretty": "^7.6.1",
+    "prettier": "^2.6.2",
+    "typescript": "~4.6",
+    "youch": "^3.2.0",
+    "youch-terminal": "^2.1.3"
+  },
+  "dependencies": {
+    "@adonisjs/attachment-lite": "^1.0.5",
+    "@adonisjs/auth": "^8.1.0",
+    "@adonisjs/bouncer": "^2.2.7",
+    "@adonisjs/core": "^5.7.6",
+    "@adonisjs/drive-s3": "^1.3.1",
+    "@adonisjs/i18n": "^1.5.2",
+    "@adonisjs/lucid": "^16.3.2",
+    "@adonisjs/mail": "^8.0.1",
+    "@adonisjs/repl": "^3.1.10",
+    "@adonisjs/view": "^6.1.5",
+    "@rocketseat/adonis-bull": "^1.0.4",
+    "acler": "^1.0.0",
+    "adonis-lucid-filter": "^4.1.0",
+    "adonis5-swagger": "1.3.3",
+    "country-to-iso": "^1.2.0",
+    "luxon": "^2.4.0",
+    "mysql": "^2.18.1",
+    "phc-argon2": "^1.1.3",
+    "proxy-addr": "^2.0.7",
+    "reflect-metadata": "^0.1.13",
+    "source-map-support": "^0.5.21",
+    "uuid": "^8.3.2"
+  }
+}

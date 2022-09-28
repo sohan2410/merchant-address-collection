@@ -1,0 +1,59 @@
+{
+  "statusUpdated": "Store status updated",
+  "alreadyInActive": "Store status already in inactive state",
+  "alreadyActive": "Store status already in active state",
+  "notFound": "Store not found",
+  "found": "Store found",
+  "deleted": "Store deleted",
+  "updated": "Store updated",
+  "created": "Store created",
+  "incorrectStoreTimings": "Opening timings cannot be greater than the closing timings",
+  "address": {
+    "notFound": "Store address not found",
+    "found": "Store address found",
+    "deleted": "Store address deleted",
+    "updated": "Store address updated",
+    "created": "Store address created",
+    "alreadyExists": "Store address already exists"
+  },
+  "personnel_details": {
+    "notFound": "Store personnel details not found",
+    "found": "Store {category} details found",
+    "deleted": "Store {category} details deleted",
+    "updated": "Store {category} details updated",
+    "created": "Store {category} details saved",
+    "eitherField": "Either email or phone number is mandatory"
+  },
+  "contract_details": {
+    "notFound": "Store contract details not found",
+    "found": "Store contract details found",
+    "deleted": "Store contract details deleted",
+    "updated": "Store contract details updated",
+    "created": "Store contract details created",
+    "alreadyExists": "Store contract details already exists"
+  },
+  "additional_details": {
+    "notFound": "Store additional details not found",
+    "found": "Store additional details found",
+    "deleted": "Store additional details deleted",
+    "updated": "Store additional details updated",
+    "created": "Store additional details created",
+    "alreadyExists": "Store additional details already exists"
+  },
+  "service": {
+    "notFound": "Store service not found",
+    "found": "Store service found",
+    "deleted": "Store service deleted",
+    "updated": "Store service updated",
+    "created": "Store service created",
+    "alreadyExists": "Store service already exists"
+  },
+  "images": {
+    "notFound": "Store images not found",
+    "found": "Store images found",
+    "deleted": "Store image deleted",
+    "updated": "Store images updated",
+    "created": "Store images created"
+  },
+  "paymentValidate": "Please provide a payment method."
+}
